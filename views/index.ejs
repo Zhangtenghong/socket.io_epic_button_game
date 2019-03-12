@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style> 
+  #main{
+    text-align: center;
+    margin:40px;
+    padding:40px;
+    width:60%;
+    border:2px solid black;
+  }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      var socket=io();
+      $('#count').click(function(){
+        socket.emit('countclick', {message:"Someone click"});
+      })
+
+      socket.on('sendcount', function(data){
+        console.log(data.number);
+        $('#showcounter').html(data.number);
+      })
+
+      $('#reset').click(function(){
+        socket.emit('reset', {message:"Someone reset"});
+      })
+
+      socket.on('resetcount', function(data){
+        console.log(data.number);
+        $('#showcounter').html(data.number);
+      })
+
+    })
+  </script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="main">
+    <h2>The button has been pushed <span id="showcounter"></span> time(s)</h2>
+    <h4>Push the button to update the count!</h4>
+    <br>
+    <button type="button" class="btn btn-primary btn-lg" id="count">Push the epic button</button>
+    <br>
+    <br>
+    <button type="button" class="btn btn-danger" id="reset">Reset count</button>
+  </div>
+</body>
+</html>
